@@ -1,0 +1,11 @@
+.App {
+}
+
+.Cost-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.Cost-input > * {
+  margin-bottom: 10px;
+}
