@@ -38,8 +38,11 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Balance</h1>
       <Balance balance={balance || []} />
+      <h1>Input</h1>
       <CostInput names={users || []} save={handleSave} />
+      <h1>History</h1>
       <History history={history || []} />
     </div>
   );
