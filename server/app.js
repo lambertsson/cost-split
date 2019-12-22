@@ -48,7 +48,9 @@ const updateBalance = (name, cost) => {
 };
 
 app.get("/", (req, res) => res.send(balance));
-app.get("/history/", (req, res) => res.send(transactionHistory.reverse()));
+app.get("/history/", (req, res) =>
+  res.send(transactionHistory.slice().sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()))
+);
 app.post("/", (req, res) => {
   const { cost, name } = req.body;
   const costNumber = Number(cost);
