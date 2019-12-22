@@ -17,6 +17,17 @@ let balance = [
   }
 ];
 
+let transactionHistory = [];
+
+const addTransaction = (name, cost) => {
+  const transaction = {
+    name,
+    cost,
+    timestamp: new Date()
+  };
+  transactionHistory.push(transaction);
+};
+
 const updateBalance = (name, cost) => {
   const payingPerson = balance.find(person => person.name.toLowerCase() === name.toLowerCase());
   const rest = balance.filter(person => person !== payingPerson);
@@ -37,11 +48,13 @@ const updateBalance = (name, cost) => {
 };
 
 app.get("/", (req, res) => res.send(balance));
+app.get("/history/", (req, res) => res.send(transactionHistory.reverse()));
 app.post("/", (req, res) => {
   const { cost, name } = req.body;
   const costNumber = Number(cost);
   if (typeof name === "string" && !!costNumber) updateBalance(name, costNumber);
   else res.status(400).send();
+  addTransaction(name, costNumber);
   res.send("Thanks for the post!");
 });
 
