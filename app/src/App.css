@@ -1,4 +1,5 @@
 .App {
+  padding: 6px;
 }
 
 .Cost-input {
@@ -8,4 +9,33 @@
 
 .Cost-input > * {
   margin-bottom: 10px;
+}
+
+.History-item {
+  margin-bottom: 12px;
+}
+
+.History-cost {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.History-meta {
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+
+.Balance-balance {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.Balance-name {
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+
+.Balance-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }

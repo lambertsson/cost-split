@@ -12,7 +12,7 @@ let balance = [
     balance: 10.0
   },
   {
-    name: "Clara",
+    name: "Klara",
     balance: -10.0
   }
 ];
@@ -28,8 +28,10 @@ const addTransaction = (name, cost) => {
   transactionHistory.push(transaction);
 };
 
+const findBalanceByName = name => balance.find(person => person.name.toLowerCase() === name.toLowerCase());
+
 const updateBalance = (name, cost) => {
-  const payingPerson = balance.find(person => person.name.toLowerCase() === name.toLowerCase());
+  const payingPerson = findBalanceByName(name);
   const rest = balance.filter(person => person !== payingPerson);
 
   if (!payingPerson) {
@@ -47,17 +49,39 @@ const updateBalance = (name, cost) => {
   }
 };
 
+const settle = (from, to, amount) => {
+  const indexOfFromPerson = balance.indexOf(from);
+  const indexOfToPerson = balance.indexOf(to);
+  balance[indexOfFromPerson].balance += amount;
+  balance[indexOfToPerson].balance -= amount;
+};
+
+const toNumber = string => {
+  const number = Number(string);
+  if (isNaN(number)) return null;
+  return number;
+};
+
 app.get("/", (req, res) => res.send(balance));
 app.get("/history/", (req, res) =>
   res.send(transactionHistory.slice().sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()))
 );
+app.post("/settle", (req, res) => {
+  const { from, to, amount } = req.body;
+  const amountNumber = toNumber(amount);
+  const fromPerson = findBalanceByName(from);
+  const toPerson = findBalanceByName(to);
+  if (amountNumber !== null && !!fromPerson && !!toPerson) settle(fromPerson, toPerson, amountNumber);
+  else return res.status(400).send();
+  return res.send();
+});
 app.post("/", (req, res) => {
   const { cost, name } = req.body;
-  const costNumber = Number(cost);
-  if (typeof name === "string" && !!costNumber) updateBalance(name, costNumber);
-  else res.status(400).send();
+  const costNumber = toNumber(cost);
+  if (typeof name === "string" && costNumber !== null) updateBalance(name, costNumber);
+  else return res.status(400).send();
   addTransaction(name, costNumber);
-  res.send("Thanks for the post!");
+  return res.send("Thanks for the post!");
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));

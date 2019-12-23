@@ -13,12 +13,11 @@ const CostInput = props => {
 
   return (
     <div className="Cost-input">
-      <label>Cost</label>
       <select value={name} onChange={e => setName(e.target.value)}>
         {options}
       </select>
       <input type="number" value={cost} onChange={e => setCost(e.target.value)} />
-      <button onClick={save}>Save</button>
+      <button onClick={save}>Spara</button>
     </div>
   );
 };
